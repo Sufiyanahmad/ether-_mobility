@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Master Dashboard - The Ether Mobility</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      body {
+        background: #0f172a;
+        color: #f8fafc;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Navigation Topbar Header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .brand-title {
+        color: #38bdf8;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .brand-sub {
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+      .btn-refresh {
+        padding: 8px 16px;
+        background: #0284c7;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-refresh:hover {
+        background: #0369a1;
+      }
+
+      /* Quick Form Navigation Hub - Single Line Layout (5 Equal Columns) */
+      .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      @media (max-width: 1024px) {
+        .nav-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 640px) {
+        .nav-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .nav-card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        padding: 14px 12px;
+        text-decoration: none;
+        color: #f8fafc;
+        transition:
+          transform 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .nav-card:hover {
+        transform: translateY(-4px);
+        border-color: #38bdf8;
+        box-shadow: 0 12px 20px -5px rgba(56, 189, 248, 0.2);
+      }
+      .nav-icon {
+        font-size: 1.5rem;
+        background: rgba(15, 23, 42, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        flex-shrink: 0;
+      }
+      .nav-text h3 {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #f8fafc;
+        line-height: 1.2;
+      }
+      .nav-text p {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin-top: 3px;
+        line-height: 1.2;
+      }
+
+      /* Overview Analytics Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        padding: 20px;
+      }
+      .stat-label {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .stat-val {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-top: 6px;
+      }
+      .val-blue {
+        color: #38bdf8;
+      }
+      .val-green {
+        color: #4ade80;
+      }
+      .val-amber {
+        color: #fbbf24;
+      }
+      .val-red {
+        color: #f87171;
+      }
+
+      /* Recent Drivers Table */
+      .section-card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 24px;
+        overflow-x: auto;
+      }
+      .section-header {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #38bdf8;
+        margin-bottom: 16px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 650px;
+      }
+      th,
+      td {
+        padding: 12px 14px;
+        text-align: left;
+        font-size: 0.9rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      th {
+        color: #cbd5e1;
+        font-weight: 600;
+        background: rgba(15, 23, 42, 0.5);
+      }
+      .badge-code {
+        background: #0f172a;
+        border: 1px solid #0284c7;
+        color: #38bdf8;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header>
+        <div>
+          <div class="brand-title">🛺 THE ETHER MOBILITY</div>
+          <div class="brand-sub">
+            Master Fleet Operations & Driver Onboarding Portal
+          </div>
+        </div>
+
+        <button class="btn-refresh" onclick="loadDashboardData()">
+          🔄 Refresh Stats
+        </button>
+      </header>
+
+      <!-- Portal Form Navigation Hub (Single Row Adjusted) -->
+      <div class="nav-grid">
+        <a href="vehicle_register.html" class="nav-card">
+          <div class="nav-icon">🛺</div>
+          <div class="nav-text">
+            <h3>Add New Vehicle</h3>
+            <p>RTO Chassis, Motor & Battery Entry</p>
+          </div>
+        </a>
+
+        <a href="driver_register.html" class="nav-card">
+          <div class="nav-icon">📝</div>
+          <div class="nav-text">
+            <h3>Driver Registration</h3>
+            <p>KYC, Document Check & Deposit</p>
+          </div>
+        </a>
+
+        <a href="monthly_earnings.html" class="nav-card">
+          <div class="nav-icon">📊</div>
+          <div class="nav-text">
+            <h3>Monthly Net Profit</h3>
+            <p>Gross Income − Maintenance Reserve</p>
+          </div>
+        </a>
+
+        <a href="weekly_collection.html" class="nav-card">
+          <div class="nav-icon">💰</div>
+          <div class="nav-text">
+            <h3>Weekly Collections</h3>
+            <p>Ledger, Arrears & Rent Tracker</p>
+          </div>
+        </a>
+
+        <a href="driver_offboarding.html" class="nav-card">
+          <div class="nav-icon">🔄</div>
+          <div class="nav-text">
+            <h3>Driver Offboarding</h3>
+            <p>Surrender Vehicle & Settlement</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Real-Time Metrics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Fleet Garage Status</div>
+          <div class="stat-val val-blue" id="statGarage">0 Total</div>
+          <small
+            style="color: #94a3b8; font-size: 0.8rem"
+            id="statGarageBreakdown"
+            >0 Assigned | 0 Available</small
+          >
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Active Drivers On Road</div>
+          <div class="stat-val val-green" id="statActiveDrivers">0 Drivers</div>
+          <small style="color: #94a3b8; font-size: 0.8rem"
+            >Assigned Vehicles Active</small
+          >
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Weekly Collection Progress</div>
+          <div class="stat-val val-amber" id="statCollected">₹ 0.00</div>
+          <small style="color: #94a3b8; font-size: 0.8rem" id="statPendingText"
+            >Pending Dues: ₹ 0.00</small
+          >
+        </div>
+      </div>
+
+      <!-- Active Driver Directory Overview -->
+      <div class="section-card">
+        <div class="section-header">📋 Recently Onboarded Active Drivers</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Reg ID</th>
+              <th>Driver Name</th>
+              <th>Mobile</th>
+              <th>Assigned Vehicle</th>
+              <th>Onboarded Date</th>
+            </tr>
+          </thead>
+          <tbody id="recentDriversBody">
+            <tr>
+              <td colspan="5" style="text-align: center; color: #94a3b8">
+                Loading fleet overview...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      function loadDashboardData() {
+        fetch("dashboard_api.php")
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === "success") {
+              const s = data.stats;
+              document.getElementById("statGarage").innerText =
+                s.total_vehicles + " Total Vehicles";
+              document.getElementById("statGarageBreakdown").innerText =
+                `${s.assigned_vehicles} Assigned | ${s.free_vehicles} Available`;
+
+              document.getElementById("statActiveDrivers").innerText =
+                s.active_drivers + " Active Drivers";
+
+              document.getElementById("statCollected").innerText =
+                "₹ " + s.weekly_collected.toLocaleString("en-IN") + ".00";
+              document.getElementById("statPendingText").innerText =
+                "Weekly Target: ₹ " +
+                s.weekly_target.toLocaleString("en-IN") +
+                " | Pending: ₹ " +
+                s.weekly_pending.toLocaleString("en-IN");
+
+              const tbody = document.getElementById("recentDriversBody");
+              tbody.innerHTML = "";
+
+              if (data.recent_drivers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8;">No active drivers on record yet.</td></tr>`;
+                return;
+              }
+
+              data.recent_drivers.forEach((d) => {
+                tbody.innerHTML += `
+                  <tr>
+                    <td><span class="badge-code">${d.reg_code || "N/A"}</span></td>
+                    <td><strong>${d.full_name}</strong></td>
+                    <td>${d.phone}</td>
+                    <td><strong style="color:#38bdf8;">${d.vehicle_number || "Unassigned"}</strong></td>
+                    <td>${new Date(d.registered_at).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
+                  </tr>
+                `;
+              });
+            }
+          })
+          .catch((err) => {
+            console.error("Dashboard Sync Error:", err);
+          });
+      }
+
+      // Initial Sync
+      loadDashboardData();
+    </script>
+  </body>
+</html>

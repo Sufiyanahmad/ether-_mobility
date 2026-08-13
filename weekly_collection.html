@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weekly Collection Dashboard - The Ether Mobility</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 24px 16px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+      header h1 {
+        color: #38bdf8;
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+      header p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        margin-top: 4px;
+      }
+
+      /* Top Financial Summary Calculation Cards */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .sum-card {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+      }
+      .sum-title {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .sum-val {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-top: 8px;
+      }
+      .val-target {
+        color: #38bdf8;
+      }
+      .val-collected {
+        color: #4ade80;
+      }
+      .val-pending {
+        color: #f87171;
+      }
+
+      /* Collection Table Styling */
+      .table-card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 20px;
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+      }
+      th,
+      td {
+        padding: 12px 14px;
+        text-align: left;
+        font-size: 0.9rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      th {
+        color: #cbd5e1;
+        font-weight: 600;
+        background: rgba(15, 23, 42, 0.5);
+      }
+
+      .badge-reg {
+        background: #0f172a;
+        border: 1px solid #0284c7;
+        color: #38bdf8;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .badge-status {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        display: inline-block;
+      }
+      .status-paid {
+        background: rgba(34, 197, 94, 0.2);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .status-partial {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+      .status-unpaid {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-pay {
+        padding: 6px 12px;
+        background: #0284c7;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.82rem;
+      }
+      .btn-pay:hover {
+        background: #0369a1;
+      }
+
+      /* Modal Window for Collecting Rent */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 16px;
+      }
+      .modal-box {
+        background: #1e293b;
+        border: 1px solid #38bdf8;
+        border-radius: 16px;
+        padding: 24px;
+        max-width: 400px;
+        width: 100%;
+      }
+      .form-group {
+        margin-bottom: 14px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: #22c55e;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .btn-submit:hover {
+        background: #16a34a;
+      }
+      .btn-cancel {
+        width: 100%;
+        padding: 10px;
+        background: #334155;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🛺 Weekly Rent Collection Dashboard</h1>
+        <p id="weekPeriodText">Current Week: Loading...</p>
+      </header>
+
+      <!-- Top Calculation Stats -->
+      <div class="summary-grid">
+        <div class="sum-card">
+          <div class="sum-title">Weekly Target (Rent + Arrears)</div>
+          <div class="sum-val val-target" id="statTarget">₹ 0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-title">Total Collected This Week</div>
+          <div class="sum-val val-collected" id="statCollected">₹ 0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-title">Total Remaining Pending Dues</div>
+          <div class="sum-val val-pending" id="statPending">₹ 0.00</div>
+        </div>
+      </div>
+
+      <!-- Active Drivers Table -->
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Reg ID & Driver</th>
+              <th>Vehicle</th>
+              <th>Rent + Prev Arrears</th>
+              <th>Total Due</th>
+              <th>Amount Paid</th>
+              <th>Balance</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="collectionTableBody">
+            <tr>
+              <td colspan="8" style="text-align: center; color: #94a3b8">
+                Loading collection records...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Collect Payment Modal -->
+    <div id="payModal" class="modal-overlay">
+      <div class="modal-box">
+        <h3 style="color: #38bdf8; margin-bottom: 12px">
+          💰 Record Rent Payment
+        </h3>
+        <form id="payForm">
+          <input type="hidden" id="modal_collection_id" name="collection_id" />
+          <div class="form-group">
+            <label>Driver Name</label>
+            <input
+              type="text"
+              id="modal_driver_name"
+              readonly
+              style="color: #94a3b8"
+            />
+          </div>
+          <div class="form-group">
+            <label>Total Outstanding Due (₹)</label>
+            <input
+              type="text"
+              id="modal_total_due"
+              readonly
+              style="color: #f87171; font-weight: 700"
+            />
+          </div>
+          <div class="form-group">
+            <label for="amount_paid">Enter Collected Amount (₹) *</label>
+            <input
+              type="number"
+              id="amount_paid"
+              name="amount_paid"
+              step="50"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="payment_mode">Payment Mode</label>
+            <select id="payment_mode" name="payment_mode">
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI / GPay / PhonePe</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">
+            Confirm & Save Payment
+          </button>
+          <button type="button" class="btn-cancel" onclick="closePayModal()">
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function loadWeeklyDashboard() {
+        fetch("collection_api.php?action=get_weekly_sheet")
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === "success") {
+              document.getElementById("weekPeriodText").innerText =
+                "Week Period: " + data.week_period;
+              document.getElementById("statTarget").innerText =
+                "₹ " + data.totals.target.toLocaleString("en-IN") + ".00";
+              document.getElementById("statCollected").innerText =
+                "₹ " + data.totals.collected.toLocaleString("en-IN") + ".00";
+              document.getElementById("statPending").innerText =
+                "₹ " + data.totals.pending.toLocaleString("en-IN") + ".00";
+
+              const tbody = document.getElementById("collectionTableBody");
+              tbody.innerHTML = "";
+
+              if (data.list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #94a3b8;">No active drivers found. Register drivers first.</td></tr>`;
+                return;
+              }
+
+              data.list.forEach((item) => {
+                let badgeClass = "status-unpaid";
+                if (item.payment_status === "Paid") badgeClass = "status-paid";
+                if (item.payment_status === "Partial")
+                  badgeClass = "status-partial";
+
+                tbody.innerHTML += `
+                  <tr>
+                    <td>
+                      <span class="badge-reg">${item.reg_code || "DRV"}</span> 
+                      <strong>${item.full_name}</strong><br>
+                      <small style="color:#94a3b8;">${item.phone}</small>
+                    </td>
+                    <td><strong style="color:#38bdf8;">${item.vehicle_number || "N/A"}</strong></td>
+                    <td>₹${parseFloat(item.weekly_rent_due).toLocaleString()} + <span style="color:#f87171;">₹${parseFloat(item.previous_arrears).toLocaleString()}</span></td>
+                    <td><strong style="color:#fbbf24;">₹${parseFloat(item.total_due).toLocaleString()}</strong></td>
+                    <td><strong style="color:#4ade80;">₹${parseFloat(item.amount_paid).toLocaleString()}</strong></td>
+                    <td><strong style="color:#f87171;">₹${parseFloat(item.balance_due).toLocaleString()}</strong></td>
+                    <td><span class="badge-status ${badgeClass}">${item.payment_status}</span></td>
+                    <td>
+                      <button class="btn-pay" onclick='openPayModal(${JSON.stringify(item)})'>Collect / Edit</button>
+                    </td>
+                  </tr>
+                `;
+              });
+            }
+          });
+      }
+
+      function openPayModal(item) {
+        document.getElementById("modal_collection_id").value =
+          item.collection_id;
+        document.getElementById("modal_driver_name").value =
+          item.full_name + " (" + item.reg_code + ")";
+        document.getElementById("modal_total_due").value =
+          "₹ " + parseFloat(item.total_due).toLocaleString();
+        document.getElementById("amount_paid").value =
+          item.amount_paid > 0 ? item.amount_paid : item.total_due;
+        document.getElementById("payModal").style.display = "flex";
+      }
+
+      function closePayModal() {
+        document.getElementById("payModal").style.display = "none";
+      }
+
+      document
+        .getElementById("payForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(this);
+
+          fetch("collection_api.php?action=collect_payment", {
+            method: "POST",
+            body: formData,
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.status === "success") {
+                closePayModal();
+                loadWeeklyDashboard();
+              } else {
+                alert("Error: " + data.message);
+              }
+            });
+        });
+
+      // Initial Load
+      loadWeeklyDashboard();
+    </script>
+  </body>
+</html>

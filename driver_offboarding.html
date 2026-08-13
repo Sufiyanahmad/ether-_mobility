@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Offboarding & Settlement Portal</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        background: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+      .card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 32px;
+        width: 100%;
+        max-width: 580px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+      h2 {
+        color: #f59e0b;
+        margin-bottom: 24px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 11px 14px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: #f8fafc;
+        font-size: 0.95rem;
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #f59e0b;
+      }
+      .search-box {
+        display: flex;
+        gap: 8px;
+      }
+      .btn-search {
+        padding: 0 16px;
+        background: #d97706;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .btn-search:hover {
+        background: #b45309;
+      }
+      .details-pane {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid #334155;
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: 16px;
+      }
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        font-size: 0.9rem;
+      }
+      .detail-row:last-child {
+        border-bottom: none;
+      }
+      .detail-label {
+        color: #94a3b8;
+      }
+      .detail-val {
+        font-weight: 600;
+        color: #f8fafc;
+      }
+      .refund-box {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        margin-top: 16px;
+      }
+      .refund-amount {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #4ade80;
+      }
+      .btn-settle {
+        width: 100%;
+        padding: 14px;
+        background: #22c55e;
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+      .btn-settle:hover {
+        background: #16a34a;
+      }
+      .msg {
+        margin-top: 18px;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .success {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .error {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+      .btn-receipt {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #d97706;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>🔄 Driver Offboarding & Settlement</h2>
+
+      <div class="form-group">
+        <label for="reg_id">Enter 5-Digit Registration ID *</label>
+        <div class="search-box">
+          <input
+            type="text"
+            id="reg_id"
+            maxlength="5"
+            placeholder="e.g. 10023"
+            required
+          />
+          <button type="button" class="btn-search" onclick="searchDriver()">
+            🔍 Search Details
+          </button>
+        </div>
+      </div>
+
+      <form id="settlementForm" style="display: none">
+        <input type="hidden" id="driver_id" name="driver_id" />
+        <input type="hidden" id="vehicle_id" name="vehicle_id" />
+        <input type="hidden" id="current_reg_code" />
+
+        <div class="details-pane" id="detailsPane">
+          <div class="detail-row">
+            <span class="detail-label">Driver Name:</span
+            ><span class="detail-val" id="disp_name">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Mobile Number:</span
+            ><span class="detail-val" id="disp_phone">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Assigned Vehicle:</span
+            ><span class="detail-val" style="color: #38bdf8" id="disp_vehicle"
+              >-</span
+            >
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Security Deposit Collected:</span
+            ><span class="detail-val" style="color: #4ade80">₹ 10,500.00</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px">
+          <label for="deductions"
+            >Deductions / Damage Charges (₹) [If Any]</label
+          >
+          <input
+            type="number"
+            id="deductions"
+            name="deductions"
+            value="0"
+            min="0"
+            max="10500"
+            oninput="calculateRefund()"
+            placeholder="Enter damage or pending rent amount"
+          />
+        </div>
+
+        <div class="refund-box">
+          <div style="font-size: 0.85rem; color: #cbd5e1">
+            Final Payable Refund Amount
+          </div>
+          <div class="refund-amount" id="disp_refund">₹ 10,500.00</div>
+        </div>
+
+        <button type="submit" class="btn-settle">
+          ✅ Complete Settlement & Return Rickshaw
+        </button>
+      </form>
+
+      <div id="msg" class="msg"></div>
+    </div>
+
+    <script>
+      function searchDriver() {
+        const regId = document.getElementById("reg_id").value.trim();
+        const msg = document.getElementById("msg");
+        const form = document.getElementById("settlementForm");
+
+        if (regId.length !== 5 || isNaN(regId)) {
+          msg.style.display = "block";
+          msg.className = "msg error";
+          msg.innerText = "❌ Please enter a valid 5-digit Registration ID!";
+          form.style.display = "none";
+          return;
+        }
+
+        msg.style.display = "none";
+
+        fetch(`offboard_driver.php?action=search&reg_id=${regId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === "success") {
+              const d = data.data;
+              document.getElementById("driver_id").value = d.driver_id;
+              document.getElementById("vehicle_id").value = d.vehicle_id;
+              document.getElementById("current_reg_code").value = d.reg_code;
+              document.getElementById("disp_name").innerText = d.full_name;
+              document.getElementById("disp_phone").innerText = d.phone;
+              document.getElementById("disp_vehicle").innerText =
+                d.vehicle_number + " (" + d.model_name + ")";
+
+              form.style.display = "block";
+              calculateRefund();
+            } else {
+              msg.style.display = "block";
+              msg.className = "msg error";
+              msg.innerText = "❌ " + data.message;
+              form.style.display = "none";
+            }
+          });
+      }
+
+      function calculateRefund() {
+        const base = 10500;
+        let ded = parseFloat(document.getElementById("deductions").value) || 0;
+        if (ded > base) ded = base;
+        const net = base - ded;
+        document.getElementById("disp_refund").innerText =
+          "₹ " + net.toLocaleString("en-IN") + ".00";
+      }
+
+      document
+        .getElementById("settlementForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(this);
+          const msg = document.getElementById("msg");
+          const regCode = document.getElementById("current_reg_code").value;
+
+          fetch("offboard_driver.php?action=process_settlement", {
+            method: "POST",
+            body: formData,
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              msg.style.display = "block";
+              if (data.status === "success") {
+                msg.className = "msg success";
+                msg.innerHTML = `
+                ✅ ${data.message}<br><br>
+                <a href="receipt_generator.php?type=offboarding&id=${regCode}" target="_blank" class="btn-receipt">🖨️ View & Print Settlement Receipt</a>
+              `;
+                document.getElementById("settlementForm").style.display =
+                  "none";
+              } else {
+                msg.className = "msg error";
+                msg.innerText = "❌ " + data.message;
+              }
+            });
+        });
+    </script>
+  </body>
+</html>

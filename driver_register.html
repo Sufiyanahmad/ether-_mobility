@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Registration & Verification Portal</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        background: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+      .card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 32px;
+        width: 100%;
+        max-width: 580px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+      h2 {
+        color: #38bdf8;
+        margin-bottom: 24px;
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 480px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      input[type="text"],
+      input[type="tel"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 11px 14px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: #f8fafc;
+        font-size: 0.95rem;
+      }
+      input[type="file"] {
+        width: 100%;
+        padding: 8px 10px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: #94a3b8;
+        font-size: 0.85rem;
+        cursor: pointer;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #38bdf8;
+      }
+      .deposit-badge {
+        background: rgba(56, 189, 248, 0.1);
+        color: #38bdf8;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        border: 1px dashed rgba(56, 189, 248, 0.35);
+        font-size: 0.95rem;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: #0284c7;
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .btn-submit:hover {
+        background: #0369a1;
+      }
+      .btn-submit:disabled {
+        background: #334155;
+        cursor: not-allowed;
+      }
+      .btn-uidai-stacked {
+        width: 100%;
+        padding: 8px 12px;
+        margin-top: 6px;
+        background: #0284c7;
+        border: none;
+        border-radius: 6px;
+        color: #ffffff;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.82rem;
+        text-align: center;
+      }
+      .msg {
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+      .success {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .error {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+      .reg-id-box {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #38bdf8;
+        background: #0f172a;
+        padding: 8px 16px;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 8px 0;
+        border: 1px solid #0284c7;
+        letter-spacing: 2px;
+      }
+      .btn-receipt {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #0284c7;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        margin-top: 8px;
+      }
+      .status-text {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        min-height: 16px;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 16px;
+      }
+      .modal-box {
+        background: #1e293b;
+        border: 1px solid #38bdf8;
+        border-radius: 16px;
+        padding: 24px;
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+      }
+      .modal-title {
+        color: #38bdf8;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .modal-body {
+        color: #cbd5e1;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        text-align: left;
+        background: rgba(15, 23, 42, 0.5);
+        padding: 14px;
+        border-radius: 8px;
+        border: 1px solid #334155;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .btn-close {
+        width: 100%;
+        padding: 10px;
+        background: #334155;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-launch {
+        width: 100%;
+        padding: 10px;
+        background: #0284c7;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>📝 Driver KYC & Registration</h2>
+      <form id="driverForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="vehicle_id">Assign Available E-Rickshaw *</label>
+          <select id="vehicle_id" name="vehicle_id" required>
+            <option value="">-- Loading Available Rickshaws... --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="full_name">Driver Full Name *</label>
+          <input
+            type="text"
+            id="full_name"
+            name="full_name"
+            placeholder="Full name as per official document"
+            required
+          />
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="phone">Mobile Number *</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="10-digit number"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="aadhaar_number">Aadhaar Card No. *</label>
+            <input
+              type="text"
+              id="aadhaar_number"
+              name="aadhaar_number"
+              maxlength="12"
+              placeholder="12-digit number"
+              oninput="validateAadhaarInput()"
+              required
+            />
+            <button
+              type="button"
+              class="btn-uidai-stacked"
+              onclick="openVerificationModal()"
+            >
+              ⚡ Check UIDAI Active Status
+            </button>
+            <small id="aadhaar_msg" class="status-text"></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Local Address (Siwan/Gopalganj) *</label>
+          <textarea
+            id="address"
+            name="address"
+            rows="2"
+            placeholder="Village / Mohalla, Post, District"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Security Deposit (Refundable)</label>
+          <div class="deposit-badge">
+            ₹ 10,500.00 (3 Weeks Advance Collected)
+          </div>
+          <input type="hidden" name="security_deposit" value="10500" />
+        </div>
+
+        <div class="form-group">
+          <label for="aadhaar_doc"
+            >1. Self-Attested Document Copy (JPG/PDF) *</label
+          >
+          <input
+            type="file"
+            id="aadhaar_doc"
+            name="aadhaar_doc"
+            accept="image/*,.pdf"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="agreement_doc"
+            >2. Signed Stamp Agreement (JPG/PDF) *</label
+          >
+          <input
+            type="file"
+            id="agreement_doc"
+            name="agreement_doc"
+            accept="image/*,.pdf"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="live_kyc_photo"
+            >3. Live Photo Holding Document (JPG/PNG) *</label
+          >
+          <input
+            type="file"
+            id="live_kyc_photo"
+            name="live_kyc_photo"
+            accept="image/*"
+            required
+          />
+        </div>
+
+        <button type="submit" id="subBtn" class="btn-submit">
+          Register Driver & Confirm Deposit
+        </button>
+      </form>
+      <div id="msg" class="msg"></div>
+    </div>
+
+    <div id="verifyModal" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-title">🛡️ Live Verification Desk</div>
+        <div class="modal-body">
+          <p>
+            <strong>Status:</strong>
+            <span style="color: #38bdf8">Number Copied to Clipboard!</span>
+          </p>
+          <br />
+          <p><strong>Steps to Verify:</strong></p>
+          <ol style="margin-left: 18px; margin-top: 6px">
+            <li>
+              Niche diye gaye <strong>"Open Official UIDAI Portal"</strong> par
+              click karein.
+            </li>
+            <li>
+              Wahan Number field par <code>Ctrl + V</code> (Paste) karein.
+            </li>
+            <li>Captcha enter karke Active Status verify karein.</li>
+          </ol>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-close" onclick="closeModal()">
+            Close Window
+          </button>
+          <a
+            href="https://myaadhaar.uidai.gov.in/check-aadhaar-validity/en"
+            target="_blank"
+            class="btn-launch"
+            onclick="closeModal()"
+            >Launch Official Portal ↗</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const d = [
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+        [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+        [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+        [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+        [5, 6, 7, 8, 9, 0, 1, 2, 3, 4],
+        [6, 7, 8, 9, 5, 1, 2, 3, 4, 0],
+        [7, 8, 9, 5, 6, 2, 3, 4, 0, 1],
+        [8, 9, 5, 6, 7, 3, 4, 0, 1, 2],
+        [9, 5, 6, 7, 8, 4, 0, 1, 2, 3],
+      ];
+      const p = [
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+        [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+        [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+        [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+        [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+        [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+        [7, 0, 4, 6, 9, 1, 3, 2, 5, 8],
+      ];
+
+      function isValidAadhaar(num) {
+        if (!/^\d{12}$/.test(num)) return false;
+        let c = 0;
+        let myArray = num.split("").reverse().map(Number);
+        for (let i = 0; i < myArray.length; i++) {
+          c = d[c][p[i % 8][myArray[i]]];
+        }
+        return c === 0;
+      }
+
+      function validateAadhaarInput() {
+        const num = document.getElementById("aadhaar_number").value.trim();
+        const msg = document.getElementById("aadhaar_msg");
+        if (num.length === 12) {
+          if (isValidAadhaar(num)) {
+            msg.style.color = "#4ade80";
+            msg.innerText = "✅ Valid Number Format";
+          } else {
+            msg.style.color = "#f87171";
+            msg.innerText = "❌ Invalid Number (Checksum Failed)";
+          }
+        } else if (num.length > 0) {
+          msg.style.color = "#fbbf24";
+          msg.innerText = "Enter 12 digits (" + num.length + "/12)";
+        } else {
+          msg.innerText = "";
+        }
+      }
+
+      function openVerificationModal() {
+        const num = document.getElementById("aadhaar_number").value.trim();
+        const msg = document.getElementById("aadhaar_msg");
+        if (num.length !== 12 || isNaN(num)) {
+          msg.style.color = "#f87171";
+          msg.innerText = "❌ Please enter a valid 12-digit number first!";
+          return;
+        }
+        navigator.clipboard.writeText(num).catch(() => {});
+        document.getElementById("verifyModal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("verifyModal").style.display = "none";
+      }
+
+      function loadUnassignedVehicles() {
+        fetch("register_driver.php?get_vehicles=1")
+          .then((res) => res.json())
+          .then((data) => {
+            const select = document.getElementById("vehicle_id");
+            select.innerHTML =
+              '<option value="">-- Select Available Rickshaw --</option>';
+            if (data.length === 0) {
+              select.innerHTML =
+                '<option value="">-- No Unassigned Rickshaws Available --</option>';
+              return;
+            }
+            data.forEach((v) => {
+              select.innerHTML += `<option value="${v.vehicle_id}">${v.vehicle_number} (${v.model_name})</option>`;
+            });
+          });
+      }
+
+      document
+        .getElementById("driverForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const btn = document.getElementById("subBtn");
+          const msg = document.getElementById("msg");
+
+          btn.disabled = true;
+          btn.innerText = "⏳ Registering & Uploading Documents...";
+          msg.style.display = "none";
+
+          const formData = new FormData(this);
+
+          fetch("register_driver.php", { method: "POST", body: formData })
+            .then((res) => res.json())
+            .then((data) => {
+              btn.disabled = false;
+              btn.innerText = "Register Driver & Confirm Deposit";
+              msg.style.display = "block";
+
+              if (data.status === "success") {
+                msg.className = "msg success";
+                msg.innerHTML = `
+                ✅ Driver Registered Successfully!<br>
+                <small style="color:#cbd5e1;">Generated Registration ID:</small><br>
+                <div class="reg-id-box">${data.reg_code}</div><br>
+                <a href="receipt_generator.php?type=registration&id=${data.reg_code}" target="_blank" class="btn-receipt">🖨️ View & Print Acknowledgement Receipt</a>
+              `;
+                document.getElementById("driverForm").reset();
+                document.getElementById("aadhaar_msg").innerText = "";
+                loadUnassignedVehicles();
+              } else {
+                msg.className = "msg error";
+                msg.innerText = "❌ " + data.message;
+              }
+            })
+            .catch((err) => {
+              btn.disabled = false;
+              btn.innerText = "Register Driver & Confirm Deposit";
+              msg.style.display = "block";
+              msg.className = "msg error";
+              msg.innerText =
+                "❌ Connection Error! Make sure you opened: http://localhost/ether_mobility/driver_register.html";
+            });
+        });
+
+      loadUnassignedVehicles();
+    </script>
+  </body>
+</html>

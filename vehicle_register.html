@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTO Vehicle Registration - The Ether Mobility</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+      body {
+        background: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+      .card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 32px;
+        width: 100%;
+        max-width: 650px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+      h2 {
+        color: #38bdf8;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      .section-title {
+        color: #818cf8;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 16px 0 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 6px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 500px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      .form-group {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #38bdf8;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: #0284c7;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      .btn-submit:hover {
+        background: #0369a1;
+      }
+      .msg {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .success {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .error {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>🛺 RTO Vehicle Registration</h2>
+      <form id="vehicleForm">
+        <div class="section-title">1. Basic Hardware & RTO Details</div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="vehicle_number">RTO Vehicle No. *</label>
+            <input
+              type="text"
+              id="vehicle_number"
+              name="vehicle_number"
+              placeholder="e.g. BR-29-ER-0001"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="model_name">Make & Model *</label>
+            <input
+              type="text"
+              id="model_name"
+              name="model_name"
+              placeholder="e.g. Mahindra Treo / Mayuri"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="chassis_number">Chassis Number (VIN) *</label>
+            <input
+              type="text"
+              id="chassis_number"
+              name="chassis_number"
+              placeholder="Full Chassis No."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="motor_number">Motor Serial Number *</label>
+            <input
+              type="text"
+              id="motor_number"
+              name="motor_number"
+              placeholder="Motor Serial No."
+              required
+            />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="battery_serial">Battery Serial Number *</label>
+            <input
+              type="text"
+              id="battery_serial"
+              name="battery_serial"
+              placeholder="Battery Pack ID"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="battery_type">Battery Type</label>
+            <select id="battery_type" name="battery_type">
+              <option value="Lithium-ion">Lithium-ion</option>
+              <option value="Lead Acid">Lead Acid</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-title">2. Paperwork & Validity Details</div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="rc_number">RC Number</label>
+            <input
+              type="text"
+              id="rc_number"
+              name="rc_number"
+              placeholder="RC Card No."
+            />
+          </div>
+          <div class="form-group">
+            <label for="rto_reg_date">RTO Registration Date</label>
+            <input type="date" id="rto_reg_date" name="rto_reg_date" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="insurance_policy">Insurance Policy No.</label>
+            <input
+              type="text"
+              id="insurance_policy"
+              name="insurance_policy"
+              placeholder="Policy No."
+            />
+          </div>
+          <div class="form-group">
+            <label for="insurance_expiry">Insurance Expiry Date</label>
+            <input type="date" id="insurance_expiry" name="insurance_expiry" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="fitness_expiry">Fitness Expiry Date</label>
+            <input type="date" id="fitness_expiry" name="fitness_expiry" />
+          </div>
+          <div class="form-group">
+            <label for="permit_expiry">Permit Expiry Date</label>
+            <input type="date" id="permit_expiry" name="permit_expiry" />
+          </div>
+        </div>
+
+        <button type="submit" id="vBtn" class="btn-submit">
+          Register Vehicle in Garage
+        </button>
+      </form>
+      <div id="vMsg" class="msg"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("vehicleForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const btn = document.getElementById("vBtn");
+          const msg = document.getElementById("vMsg");
+
+          btn.disabled = true;
+          btn.innerText = "⏳ Saving Vehicle Details...";
+          msg.style.display = "none";
+
+          const formData = new FormData(this);
+
+          fetch("register_vehicle.php", { method: "POST", body: formData })
+            .then((res) => res.json())
+            .then((data) => {
+              btn.disabled = false;
+              btn.innerText = "Register Vehicle in Garage";
+              msg.style.display = "block";
+
+              if (data.status === "success") {
+                msg.className = "msg success";
+                msg.innerText = "✅ " + data.message;
+                this.reset();
+              } else {
+                msg.className = "msg error";
+                msg.innerText = "❌ " + data.message;
+              }
+            })
+            .catch((err) => {
+              btn.disabled = false;
+              btn.innerText = "Register Vehicle in Garage";
+              msg.style.display = "block";
+              msg.className = "msg error";
+              msg.innerText =
+                "❌ Connection Error! Ensure you opened: http://localhost/ether_mobility/vehicle_register.html";
+            });
+        });
+    </script>
+  </body>
+</html>
