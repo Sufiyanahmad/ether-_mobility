@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weekly Collection Dashboard - The Ether Mobility</title>
+    <title>Weekly Collection & All-Time Ledger - The Ether Mobility</title>
     <style>
       * {
         margin: 0;
@@ -18,13 +18,17 @@
         min-height: 100vh;
       }
       .container {
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
       }
 
       header {
-        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 12px;
       }
       header h1 {
         color: #38bdf8;
@@ -36,32 +40,53 @@
         font-size: 0.95rem;
         margin-top: 4px;
       }
+      .btn-nav {
+        padding: 8px 16px;
+        background: #334155;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+      .btn-nav:hover {
+        background: #475569;
+      }
 
-      /* Top Financial Summary Calculation Cards */
+      .section-heading {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+      }
+
+      /* Summary Cards Grid */
       .summary-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 14px;
         margin-bottom: 24px;
       }
       .sum-card {
         background: rgba(30, 41, 59, 0.7);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
-        padding: 20px;
+        padding: 16px;
         text-align: center;
       }
       .sum-title {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #94a3b8;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
       .sum-val {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 800;
-        margin-top: 8px;
+        margin-top: 6px;
       }
       .val-target {
         color: #38bdf8;
@@ -72,8 +97,17 @@
       .val-pending {
         color: #f87171;
       }
+      .val-all-expense {
+        color: #f87171;
+      }
+      .val-all-profit {
+        color: #4ade80;
+      }
+      .val-all-net {
+        color: #38bdf8;
+      }
 
-      /* Collection Table Styling */
+      /* Table Styling */
       .table-card {
         background: rgba(30, 41, 59, 0.7);
         backdrop-filter: blur(12px);
@@ -147,7 +181,7 @@
         background: #0369a1;
       }
 
-      /* Modal Window for Collecting Rent */
+      /* Modal Window */
       .modal-overlay {
         position: fixed;
         top: 0;
@@ -220,22 +254,43 @@
   <body>
     <div class="container">
       <header>
-        <h1>🛺 Weekly Rent Collection Dashboard</h1>
-        <p id="weekPeriodText">Current Week: Loading...</p>
+        <div>
+          <h1>🛺 Weekly Rent & All-Time Ledger</h1>
+          <p id="weekPeriodText">Week Period: Loading...</p>
+        </div>
+        <a href="dashboard.html" class="btn-nav">← Back to Dashboard</a>
       </header>
 
-      <!-- Top Calculation Stats -->
+      <!-- 1. All-Time Performance Ledger -->
+      <div class="section-heading">🌟 All-Time Cumulative Ledger</div>
       <div class="summary-grid">
         <div class="sum-card">
-          <div class="sum-title">Weekly Target (Rent + Arrears)</div>
+          <div class="sum-title">All-Time Maintenance Expense</div>
+          <div class="sum-val val-all-expense" id="statAllExpense">₹ 0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-title">All-Time Profit</div>
+          <div class="sum-val val-all-profit" id="statAllProfit">₹ 0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-title">All-Time Net Earning (Expense + Profit)</div>
+          <div class="sum-val val-all-net" id="statAllNet">₹ 0.00</div>
+        </div>
+      </div>
+
+      <!-- 2. Current Week Ledger -->
+      <div class="section-heading">📅 Current Week Performance</div>
+      <div class="summary-grid">
+        <div class="sum-card">
+          <div class="sum-title">This Week Target</div>
           <div class="sum-val val-target" id="statTarget">₹ 0.00</div>
         </div>
         <div class="sum-card">
-          <div class="sum-title">Total Collected This Week</div>
+          <div class="sum-title">Collected This Week</div>
           <div class="sum-val val-collected" id="statCollected">₹ 0.00</div>
         </div>
         <div class="sum-card">
-          <div class="sum-title">Total Remaining Pending Dues</div>
+          <div class="sum-title">Pending Balance This Week</div>
           <div class="sum-val val-pending" id="statPending">₹ 0.00</div>
         </div>
       </div>
@@ -326,6 +381,7 @@
           .then((res) => res.json())
           .then((data) => {
             if (data.status === "success") {
+              // Current Week Info
               document.getElementById("weekPeriodText").innerText =
                 "Week Period: " + data.week_period;
               document.getElementById("statTarget").innerText =
@@ -334,6 +390,18 @@
                 "₹ " + data.totals.collected.toLocaleString("en-IN") + ".00";
               document.getElementById("statPending").innerText =
                 "₹ " + data.totals.pending.toLocaleString("en-IN") + ".00";
+
+              // All-Time Clean Numbers (No minus signs)
+              document.getElementById("statAllExpense").innerText =
+                "₹ " +
+                data.all_time.maintenance_expense.toLocaleString("en-IN") +
+                ".00";
+              document.getElementById("statAllProfit").innerText =
+                "₹ " + data.all_time.profit.toLocaleString("en-IN") + ".00";
+              document.getElementById("statAllNet").innerText =
+                "₹ " +
+                data.all_time.net_earning.toLocaleString("en-IN") +
+                ".00";
 
               const tbody = document.getElementById("collectionTableBody");
               tbody.innerHTML = "";
@@ -409,7 +477,6 @@
             });
         });
 
-      // Initial Load
       loadWeeklyDashboard();
     </script>
   </body>

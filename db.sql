@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS ether_mobility;
 USE ether_mobility;
 
--- 1. Vehicles Table
+-- 1. Vehicles Table (With Built-in GPS Tracking Fields)
 CREATE TABLE IF NOT EXISTS vehicles (
     vehicle_id INT AUTO_INCREMENT PRIMARY KEY,
     vehicle_number VARCHAR(20) NOT NULL UNIQUE,
@@ -16,11 +16,15 @@ CREATE TABLE IF NOT EXISTS vehicles (
     insurance_expiry DATE NULL,
     fitness_expiry DATE NULL,
     permit_expiry DATE NULL,
+    latitude DECIMAL(10,8) DEFAULT 26.2196,
+    longitude DECIMAL(11,8) DEFAULT 84.3567,
+    gps_device_id VARCHAR(50) NULL,
+    last_ping DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     status ENUM('Unassigned', 'Assigned', 'Maintenance') DEFAULT 'Unassigned',
     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Drivers Table
+-- 2. Drivers Table (With Settlement Tracking & 5-Digit Reg Code)
 CREATE TABLE IF NOT EXISTS drivers (
     driver_id INT AUTO_INCREMENT PRIMARY KEY,
     reg_code VARCHAR(10) UNIQUE NULL,
@@ -29,7 +33,7 @@ CREATE TABLE IF NOT EXISTS drivers (
     aadhaar_number VARCHAR(12) NOT NULL UNIQUE,
     address TEXT NOT NULL,
     security_deposit DECIMAL(10,2) NOT NULL DEFAULT 10500.00,
-    vehicle_id INT NULL UNIQUE,
+    vehicle_id INT NULL,
     aadhaar_doc VARCHAR(255) NOT NULL,
     agreement_doc VARCHAR(255) NOT NULL,
     live_kyc_photo VARCHAR(255) NOT NULL,
@@ -41,20 +45,17 @@ CREATE TABLE IF NOT EXISTS drivers (
     FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id) ON DELETE SET NULL
 );
 
-
-USE ether_mobility;
-
--- Weekly Collection Ledger Table
+-- 3. Weekly Collection Ledger Table (With Carry-forward Arrears)
 CREATE TABLE IF NOT EXISTS weekly_collections (
     collection_id INT AUTO_INCREMENT PRIMARY KEY,
     driver_id INT NOT NULL,
     week_start_date DATE NOT NULL,
     week_end_date DATE NOT NULL,
-    weekly_rent_due DECIMAL(10,2) DEFAULT 3500.00, -- ₹500 x 7 days = ₹3,500/week
-    previous_arrears DECIMAL(10,2) DEFAULT 0.00,  -- Purana pending dues
-    total_due DECIMAL(10,2) NOT NULL,              -- Rent + Previous Arrears
+    weekly_rent_due DECIMAL(10,2) DEFAULT 3500.00,
+    previous_arrears DECIMAL(10,2) DEFAULT 0.00,
+    total_due DECIMAL(10,2) NOT NULL,
     amount_paid DECIMAL(10,2) DEFAULT 0.00,
-    balance_due DECIMAL(10,2) NOT NULL,            -- Total Due - Amount Paid
+    balance_due DECIMAL(10,2) NOT NULL,
     payment_status ENUM('Paid', 'Partial', 'Unpaid') DEFAULT 'Unpaid',
     payment_mode ENUM('Cash', 'UPI', 'Bank Transfer', 'Pending') DEFAULT 'Cash',
     collected_at DATETIME NULL,
@@ -62,15 +63,13 @@ CREATE TABLE IF NOT EXISTS weekly_collections (
     UNIQUE KEY unique_driver_week (driver_id, week_start_date)
 );
 
-USE ether_mobility;
-
--- Monthly Finance & Maintenance Tracking Ledger Table
+-- 4. Monthly Finance & Maintenance Tracking Ledger
 CREATE TABLE IF NOT EXISTS monthly_earnings (
     earning_id INT AUTO_INCREMENT PRIMARY KEY,
-    month_year VARCHAR(7) NOT NULL UNIQUE, -- Format: YYYY-MM (e.g. 2026-08)
+    month_year VARCHAR(7) NOT NULL UNIQUE,
     gross_collected DECIMAL(10,2) DEFAULT 0.00,
     total_vehicles_active INT DEFAULT 0,
-    maintenance_deduction DECIMAL(10,2) DEFAULT 0.00, -- (Active Vehicles * 1500)
+    maintenance_deduction DECIMAL(10,2) DEFAULT 0.00,
     net_profit DECIMAL(10,2) DEFAULT 0.00,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

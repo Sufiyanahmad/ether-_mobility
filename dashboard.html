@@ -18,11 +18,11 @@
         padding: 24px 16px;
       }
       .container {
-        max-width: 1200px;
+        max-width: 1240px;
         margin: 0 auto;
       }
 
-      /* Navigation Topbar Header */
+      /* Header */
       header {
         display: flex;
         justify-content: space-between;
@@ -43,8 +43,42 @@
         color: #94a3b8;
         font-size: 0.9rem;
       }
+      .live-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(74, 222, 128, 0.1);
+        color: #4ade80;
+        border: 1px solid rgba(74, 222, 128, 0.3);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(0.95);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.95);
+          opacity: 0.7;
+        }
+      }
+
       .btn-refresh {
-        padding: 8px 16px;
+        padding: 9px 18px;
         background: #0284c7;
         border: none;
         border-radius: 8px;
@@ -57,16 +91,16 @@
         background: #0369a1;
       }
 
-      /* Quick Form Navigation Hub - Single Line Layout (5 Equal Columns) */
+      /* 4 Quick Nav Cards */
       .nav-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
         margin-bottom: 28px;
       }
       @media (max-width: 1024px) {
         .nav-grid {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
         }
       }
       @media (max-width: 640px) {
@@ -80,7 +114,7 @@
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 14px;
-        padding: 14px 12px;
+        padding: 16px 14px;
         text-decoration: none;
         color: #f8fafc;
         transition:
@@ -89,7 +123,7 @@
           box-shadow 0.2s;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
       }
       .nav-card:hover {
         transform: translateY(-4px);
@@ -105,41 +139,46 @@
         flex-shrink: 0;
       }
       .nav-text h3 {
-        font-size: 0.88rem;
+        font-size: 0.92rem;
         font-weight: 700;
         color: #f8fafc;
         line-height: 1.2;
       }
       .nav-text p {
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         color: #94a3b8;
-        margin-top: 3px;
+        margin-top: 4px;
         line-height: 1.2;
       }
 
-      /* Overview Analytics Cards */
+      /* Stats Metrics (3 equal columns matching the image layout) */
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 16px;
         margin-bottom: 28px;
       }
       .stat-card {
         background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 14px;
         padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
       .stat-label {
         font-size: 0.85rem;
         color: #94a3b8;
         font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 0.03em;
       }
       .stat-val {
         font-size: 1.8rem;
         font-weight: 800;
-        margin-top: 6px;
+        margin: 6px 0;
       }
       .val-blue {
         color: #38bdf8;
@@ -147,14 +186,40 @@
       .val-green {
         color: #4ade80;
       }
-      .val-amber {
-        color: #fbbf24;
+
+      /* 2-Row Split Layout inside Weekly Collection Card */
+      .progress-rows {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: rgba(15, 23, 42, 0.5);
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
       }
-      .val-red {
+      .p-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.88rem;
+      }
+      .p-label {
+        color: #94a3b8;
+        font-weight: 600;
+      }
+      .p-val-target {
+        color: #38bdf8;
+        font-weight: 700;
+        font-family: monospace;
+      }
+      .p-val-pending {
         color: #f87171;
+        font-weight: 800;
+        font-family: monospace;
       }
 
-      /* Recent Drivers Table */
+      /* Table Section */
       .section-card {
         background: rgba(30, 41, 59, 0.7);
         backdrop-filter: blur(12px);
@@ -168,11 +233,22 @@
         font-weight: 700;
         color: #38bdf8;
         margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .count-badge {
+        font-size: 0.8rem;
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(56, 189, 248, 0.3);
       }
       table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 650px;
+        min-width: 840px;
       }
       th,
       td {
@@ -190,10 +266,255 @@
         background: #0f172a;
         border: 1px solid #0284c7;
         color: #38bdf8;
-        padding: 2px 8px;
-        border-radius: 4px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        font-family: monospace;
+      }
+
+      /* Driver Name Button */
+      .driver-name-btn {
+        background: none;
+        border: none;
+        color: #f8fafc;
+        cursor: pointer;
+        font-size: 0.92rem;
+        font-weight: 700;
+        text-align: left;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0;
+        transition: color 0.2s;
+      }
+      .driver-name-btn:hover {
+        color: #38bdf8;
+        text-decoration: underline;
+      }
+
+      /* Vehicle Stack */
+      .veh-block {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .veh-num {
+        color: #38bdf8;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      .veh-meta {
+        color: #94a3b8;
+        font-size: 0.78rem;
+        font-weight: 500;
+      }
+
+      .btn-unassigned {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(249, 115, 22, 0.15);
+        color: #fb923c;
+        border: 1px solid rgba(249, 115, 22, 0.4);
+        padding: 5px 10px;
+        border-radius: 6px;
         font-weight: 700;
         font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .btn-unassigned:hover {
+        background: rgba(249, 115, 22, 0.35);
+        border-color: #fb923c;
+      }
+
+      /* Dues Status Styling */
+      .dues-red {
+        color: #f87171;
+        font-weight: 800;
+        font-family: monospace;
+        font-size: 0.95rem;
+      }
+      .dues-zero {
+        display: inline-block;
+        background: rgba(74, 222, 128, 0.12);
+        color: #4ade80;
+        border: 1px solid rgba(74, 222, 128, 0.3);
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.78rem;
+      }
+
+      /* Modals */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 16px;
+      }
+      .modal-card {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 18px;
+        width: 100%;
+        max-width: 520px;
+        padding: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-title-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 10px;
+      }
+      .modal-heading {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #38bdf8;
+      }
+      .modal-close-btn {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 1.8rem;
+        cursor: pointer;
+        line-height: 1;
+      }
+      .modal-close-btn:hover {
+        color: #fff;
+      }
+
+      .profile-top {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        background: rgba(15, 23, 42, 0.6);
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 16px;
+      }
+      .profile-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: #0284c7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: #fff;
+        border: 2px solid #38bdf8;
+        flex-shrink: 0;
+      }
+      .profile-info h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #f8fafc;
+      }
+      .profile-info p {
+        font-size: 0.82rem;
+        color: #94a3b8;
+        margin-top: 2px;
+      }
+
+      .modal-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .modal-stat-box {
+        background: #0f172a;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .modal-stat-label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        color: #94a3b8;
+        font-weight: 600;
+      }
+      .modal-stat-val {
+        font-size: 1.05rem;
+        font-weight: 800;
+        margin-top: 3px;
+      }
+
+      .detail-list {
+        background: rgba(15, 23, 42, 0.4);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin-bottom: 16px;
+      }
+      .detail-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        font-size: 0.85rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .detail-item:last-child {
+        border-bottom: none;
+      }
+      .detail-label {
+        color: #94a3b8;
+      }
+      .detail-val {
+        color: #f8fafc;
+        font-weight: 600;
+      }
+
+      .field-group {
+        margin-bottom: 16px;
+      }
+      .field-label {
+        display: block;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .field-control {
+        width: 100%;
+        padding: 10px 14px;
+        background: #0f172a;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: #f8fafc;
+        font-size: 0.9rem;
+        outline: none;
+      }
+      .btn-confirm-assign {
+        width: 100%;
+        padding: 12px;
+        background: #22c55e;
+        border: none;
+        border-radius: 8px;
+        color: #0f172a;
+        font-weight: 800;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-confirm-assign:hover {
+        background: #16a34a;
       }
     </style>
   </head>
@@ -207,13 +528,17 @@
             Master Fleet Operations & Driver Onboarding Portal
           </div>
         </div>
-
-        <button class="btn-refresh" onclick="loadDashboardData()">
-          🔄 Refresh Stats
-        </button>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <span class="live-indicator"
+            ><span class="live-dot"></span> 1s LIVE SYNC</span
+          >
+          <button class="btn-refresh" onclick="loadDashboardData()">
+            🔄 Refresh
+          </button>
+        </div>
       </header>
 
-      <!-- Portal Form Navigation Hub (Single Row Adjusted) -->
+      <!-- 4 Nav Cards -->
       <div class="nav-grid">
         <a href="vehicle_register.html" class="nav-card">
           <div class="nav-icon">🛺</div>
@@ -228,14 +553,6 @@
           <div class="nav-text">
             <h3>Driver Registration</h3>
             <p>KYC, Document Check & Deposit</p>
-          </div>
-        </a>
-
-        <a href="monthly_earnings.html" class="nav-card">
-          <div class="nav-icon">📊</div>
-          <div class="nav-text">
-            <h3>Monthly Net Profit</h3>
-            <p>Gross Income − Maintenance Reserve</p>
           </div>
         </a>
 
@@ -256,38 +573,54 @@
         </a>
       </div>
 
-      <!-- Real-Time Metrics -->
+      <!-- Operational Metrics Grid (3 equal columns) -->
       <div class="stats-grid">
+        <!-- 1. Garage Fleet Card -->
         <div class="stat-card">
           <div class="stat-label">Fleet Garage Status</div>
           <div class="stat-val val-blue" id="statGarage">0 Total</div>
           <small
-            style="color: #94a3b8; font-size: 0.8rem"
+            style="color: #94a3b8; font-size: 0.82rem; margin-top: 4px"
             id="statGarageBreakdown"
-            >0 Assigned | 0 Available</small
           >
+            0 Assigned | 0 Available
+          </small>
         </div>
 
+        <!-- 2. Active Drivers On Road Card -->
         <div class="stat-card">
           <div class="stat-label">Active Drivers On Road</div>
           <div class="stat-val val-green" id="statActiveDrivers">0 Drivers</div>
-          <small style="color: #94a3b8; font-size: 0.8rem"
-            >Assigned Vehicles Active</small
-          >
+          <small style="color: #94a3b8; font-size: 0.82rem; margin-top: 4px">
+            Assigned vehicles active & running
+          </small>
         </div>
 
+        <!-- 3. Weekly Collection Progress (With Clean 2-Row Split Layout) -->
         <div class="stat-card">
           <div class="stat-label">Weekly Collection Progress</div>
-          <div class="stat-val val-amber" id="statCollected">₹ 0.00</div>
-          <small style="color: #94a3b8; font-size: 0.8rem" id="statPendingText"
-            >Pending Dues: ₹ 0.00</small
-          >
+          <div class="stat-val val-green" id="statCollected">₹ 0.00</div>
+
+          <!-- 2 Distinct Rows for Target and Pending -->
+          <div class="progress-rows">
+            <div class="p-row">
+              <span class="p-label">Weekly Target:</span>
+              <span class="p-val-target" id="statTargetRow">₹ 0.00</span>
+            </div>
+            <div class="p-row">
+              <span class="p-label">Pending Dues:</span>
+              <span class="p-val-pending" id="statPendingRow">₹ 0.00</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Active Driver Directory Overview -->
+      <!-- Active Directory -->
       <div class="section-card">
-        <div class="section-header">📋 Recently Onboarded Active Drivers</div>
+        <div class="section-header">
+          <span>📋 Onboarded Active Drivers Directory</span>
+          <span class="count-badge" id="driverCountBadge">0 Drivers Total</span>
+        </div>
         <table>
           <thead>
             <tr>
@@ -295,12 +628,13 @@
               <th>Driver Name</th>
               <th>Mobile</th>
               <th>Assigned Vehicle</th>
+              <th>Outstanding Dues</th>
               <th>Onboarded Date</th>
             </tr>
           </thead>
           <tbody id="recentDriversBody">
             <tr>
-              <td colspan="5" style="text-align: center; color: #94a3b8">
+              <td colspan="6" style="text-align: center; color: #94a3b8">
                 Loading fleet overview...
               </td>
             </tr>
@@ -309,7 +643,124 @@
       </div>
     </div>
 
+    <!-- 1. DRIVER PROFILE POPUP MODAL -->
+    <div class="modal-overlay" id="profileModal" style="display: none">
+      <div class="modal-card">
+        <div class="modal-title-bar">
+          <div class="modal-heading">👤 Driver Profile & Ledger</div>
+          <button class="modal-close-btn" onclick="closeProfileModal()">
+            &times;
+          </button>
+        </div>
+
+        <div class="profile-top">
+          <div id="profAvatarContainer">
+            <div class="profile-avatar">👤</div>
+          </div>
+          <div class="profile-info">
+            <h3 id="profFullName">--</h3>
+            <p>Reg Code: <span class="badge-code" id="profRegCode">--</span></p>
+            <p id="profPhone" style="margin-top: 4px; color: #38bdf8">--</p>
+          </div>
+        </div>
+
+        <div class="modal-stats-grid">
+          <div class="modal-stat-box">
+            <div class="modal-stat-label">Security Deposit</div>
+            <div class="modal-stat-val val-blue" id="profDeposit">₹ 0.00</div>
+          </div>
+          <div class="modal-stat-box">
+            <div class="modal-stat-label">Assigned Vehicle</div>
+            <div
+              class="modal-stat-val"
+              id="profVehicle"
+              style="font-size: 0.92rem; color: #38bdf8"
+            >
+              --
+            </div>
+          </div>
+          <div class="modal-stat-box">
+            <div class="modal-stat-label">All-Time Rent Paid</div>
+            <div class="modal-stat-val val-green" id="profTotalPaid">
+              ₹ 0.00
+            </div>
+          </div>
+          <div class="modal-stat-box">
+            <div class="modal-stat-label">Total Outstanding Dues</div>
+            <div class="modal-stat-val val-red" id="profTotalDues">₹ 0.00</div>
+          </div>
+        </div>
+
+        <div class="detail-list">
+          <div class="detail-item">
+            <span class="detail-label">Aadhaar:</span>
+            <span class="detail-val" id="profAadhaar">--</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Address:</span>
+            <span class="detail-val" id="profAddress">--</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Onboarding Date:</span>
+            <span class="detail-val" id="profOnboardedDate">--</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Last Payment Made:</span>
+            <span class="detail-val" id="profLastPayment">--</span>
+          </div>
+        </div>
+
+        <button
+          class="btn-refresh"
+          style="width: 100%"
+          onclick="closeProfileModal()"
+        >
+          Close Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. ASSIGNMENT POPUP MODAL -->
+    <div class="modal-overlay" id="assignModal" style="display: none">
+      <div class="modal-card">
+        <div class="modal-title-bar">
+          <div class="modal-heading">🛺 Assign Available E-Rickshaw</div>
+          <button class="modal-close-btn" onclick="closeAssignModal()">
+            &times;
+          </button>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Selected Driver</label>
+          <input
+            type="text"
+            id="modalDriverName"
+            class="field-control"
+            readonly
+            style="background: #0b1120"
+          />
+          <input type="hidden" id="modalDriverId" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label"
+            >Choose Available E-Rickshaw from Garage</label
+          >
+          <select id="modalVehicleSelect" class="field-control">
+            <option value="">Loading available fleet...</option>
+          </select>
+        </div>
+
+        <button class="btn-confirm-assign" onclick="submitVehicleAssignment()">
+          ✅ Confirm & Assign E-Rickshaw
+        </button>
+      </div>
+    </div>
+
     <script>
+      let driversDataMap = {};
+      let activeOpenDriverId = null;
+
       function loadDashboardData() {
         fetch("dashboard_api.php")
           .then((res) => res.json())
@@ -317,49 +768,260 @@
             if (data.status === "success") {
               const s = data.stats;
               document.getElementById("statGarage").innerText =
-                s.total_vehicles + " Total Vehicles";
+                `${s.total_vehicles} Total`;
               document.getElementById("statGarageBreakdown").innerText =
                 `${s.assigned_vehicles} Assigned | ${s.free_vehicles} Available`;
-
               document.getElementById("statActiveDrivers").innerText =
-                s.active_drivers + " Active Drivers";
+                `${s.active_drivers} Drivers`;
 
+              // Main Collected (Green) and Sub-Rows (Target Blue, Pending Red)
               document.getElementById("statCollected").innerText =
-                "₹ " + s.weekly_collected.toLocaleString("en-IN") + ".00";
-              document.getElementById("statPendingText").innerText =
-                "Weekly Target: ₹ " +
-                s.weekly_target.toLocaleString("en-IN") +
-                " | Pending: ₹ " +
-                s.weekly_pending.toLocaleString("en-IN");
+                `₹ ${Number(s.weekly_collected).toLocaleString("en-IN")}.00`;
+              document.getElementById("statTargetRow").innerText =
+                `₹ ${Number(s.weekly_target).toLocaleString("en-IN")}.00`;
+              document.getElementById("statPendingRow").innerText =
+                `₹ ${Number(s.weekly_pending).toLocaleString("en-IN")}.00`;
 
               const tbody = document.getElementById("recentDriversBody");
-              tbody.innerHTML = "";
+              const list = data.recent_drivers || [];
+              document.getElementById("driverCountBadge").innerText =
+                `${list.length} Drivers Total`;
 
-              if (data.recent_drivers.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8;">No active drivers on record yet.</td></tr>`;
+              if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8;">No active drivers on record yet.</td></tr>`;
                 return;
               }
 
-              data.recent_drivers.forEach((d) => {
-                tbody.innerHTML += `
+              driversDataMap = {};
+              let html = "";
+              list.forEach((d) => {
+                driversDataMap[d.driver_id] = d;
+
+                let vehicleDisplay = "";
+                if (d.vehicle_number) {
+                  const modelText = d.model_name
+                    ? d.model_name
+                    : "Mayuri Deluxe Pro";
+                  vehicleDisplay = `
+                    <div class="veh-block">
+                      <span class="veh-num">🛺 ${d.vehicle_number}</span>
+                      <span class="veh-meta">${modelText}</span>
+                    </div>
+                  `;
+                } else {
+                  vehicleDisplay = `
+                    <button type="button" class="btn-unassigned" onclick="openAssignModal(${d.driver_id})">
+                      ⚠️ Unassigned (Waiting) ➕
+                    </button>
+                  `;
+                }
+
+                let duesDisplay = "";
+                const duesVal = Number(d.driver_dues || 0);
+                if (duesVal > 0) {
+                  duesDisplay = `<span class="dues-red">₹ ${duesVal.toLocaleString("en-IN")}.00</span>`;
+                } else {
+                  duesDisplay = `<span class="dues-zero">No Dues ✅</span>`;
+                }
+
+                const regDate = d.registered_at
+                  ? new Date(d.registered_at).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "N/A";
+
+                html += `
                   <tr>
-                    <td><span class="badge-code">${d.reg_code || "N/A"}</span></td>
-                    <td><strong>${d.full_name}</strong></td>
+                    <td><span class="badge-code">${d.reg_code}</span></td>
+                    <td>
+                      <button type="button" class="driver-name-btn" onclick="openProfileModal(${d.driver_id})">
+                        ${d.full_name} 🔍
+                      </button>
+                    </td>
                     <td>${d.phone}</td>
-                    <td><strong style="color:#38bdf8;">${d.vehicle_number || "Unassigned"}</strong></td>
-                    <td>${new Date(d.registered_at).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
+                    <td>${vehicleDisplay}</td>
+                    <td>${duesDisplay}</td>
+                    <td>${regDate}</td>
                   </tr>
                 `;
               });
+
+              tbody.innerHTML = html;
+
+              if (
+                activeOpenDriverId &&
+                document.getElementById("profileModal").style.display === "flex"
+              ) {
+                openProfileModal(activeOpenDriverId, true);
+              }
             }
           })
           .catch((err) => {
-            console.error("Dashboard Sync Error:", err);
+            console.error("Dashboard Live Sync Error:", err);
           });
       }
 
-      // Initial Sync
+      function openProfileModal(driverId, silentUpdate = false) {
+        activeOpenDriverId = driverId;
+
+        fetch(
+          `dashboard_api.php?action=get_driver_profile&driver_id=${driverId}`,
+        )
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              const p = res.profile;
+
+              document.getElementById("profFullName").innerText = p.full_name;
+              document.getElementById("profRegCode").innerText = p.reg_code;
+              document.getElementById("profPhone").innerText = `📞 ${p.phone}`;
+              document.getElementById("profAadhaar").innerText =
+                p.aadhaar_number;
+              document.getElementById("profAddress").innerText = p.address;
+              document.getElementById("profDeposit").innerText =
+                `₹ ${Number(p.security_deposit).toLocaleString("en-IN")}.00`;
+              document.getElementById("profVehicle").innerText =
+                p.vehicle_number && p.vehicle_number !== "Unassigned"
+                  ? `${p.vehicle_number} (${p.model_name})`
+                  : "⚠️ Unassigned";
+
+              document.getElementById("profTotalPaid").innerText =
+                `₹ ${Number(p.total_paid_alltime).toLocaleString("en-IN")}.00`;
+
+              const duesAmount = Number(p.total_dues_alltime);
+              const duesEl = document.getElementById("profTotalDues");
+              if (duesAmount > 0) {
+                duesEl.className = "modal-stat-val val-red";
+                duesEl.innerText = `₹ ${duesAmount.toLocaleString("en-IN")}.00`;
+              } else {
+                duesEl.className = "modal-stat-val val-green";
+                duesEl.innerText = `₹ 0.00 (Cleared)`;
+              }
+
+              const regDate = p.registered_at
+                ? new Date(p.registered_at).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "N/A";
+              document.getElementById("profOnboardedDate").innerText = regDate;
+
+              if (p.last_paid_amount > 0 && p.last_payment_date) {
+                const payDate = new Date(
+                  p.last_payment_date,
+                ).toLocaleDateString("en-IN", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                });
+                document.getElementById("profLastPayment").innerText =
+                  `₹ ${Number(p.last_paid_amount).toLocaleString("en-IN")} on ${payDate}`;
+              } else {
+                document.getElementById("profLastPayment").innerText =
+                  "No payment recorded yet";
+              }
+
+              if (!silentUpdate) {
+                const avatarContainer = document.getElementById(
+                  "profAvatarContainer",
+                );
+                if (p.live_kyc_photo && !p.live_kyc_photo.includes("dummy")) {
+                  avatarContainer.innerHTML = `<img src="uploads/${p.live_kyc_photo}" class="profile-avatar" alt="Photo" onerror="this.outerHTML='<div class=\\'profile-avatar\\'>👤</div>'" />`;
+                } else {
+                  avatarContainer.innerHTML = `<div class="profile-avatar">👤</div>`;
+                }
+                document.getElementById("profileModal").style.display = "flex";
+              }
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to load driver profile:", err);
+          });
+      }
+
+      function closeProfileModal() {
+        document.getElementById("profileModal").style.display = "none";
+        activeOpenDriverId = null;
+      }
+
+      function openAssignModal(driverId) {
+        const driver = driversDataMap[driverId];
+        if (!driver) return;
+
+        document.getElementById("modalDriverId").value = driverId;
+        document.getElementById("modalDriverName").value =
+          `${driver.full_name} (Code: ${driver.reg_code})`;
+
+        const selectEl = document.getElementById("modalVehicleSelect");
+        selectEl.innerHTML = `<option value="">Loading available vehicles...</option>`;
+
+        fetch("dashboard_api.php?action=get_available_vehicles")
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              if (res.vehicles.length === 0) {
+                selectEl.innerHTML = `<option value="">❌ No spare vehicles available in garage</option>`;
+                return;
+              }
+
+              let opts = `<option value="">-- Select E-Rickshaw --</option>`;
+              res.vehicles.forEach((v) => {
+                opts += `<option value="${v.vehicle_id}">${v.vehicle_number} (${v.model_name})</option>`;
+              });
+              selectEl.innerHTML = opts;
+            }
+          })
+          .catch((err) => {
+            selectEl.innerHTML = `<option value="">Error loading vehicles</option>`;
+          });
+
+        document.getElementById("assignModal").style.display = "flex";
+      }
+
+      function closeAssignModal() {
+        document.getElementById("assignModal").style.display = "none";
+      }
+
+      function submitVehicleAssignment() {
+        const driverId = document.getElementById("modalDriverId").value;
+        const vehicleId = document.getElementById("modalVehicleSelect").value;
+
+        if (!vehicleId) {
+          alert("Please choose an available E-Rickshaw from the list!");
+          return;
+        }
+
+        fetch("dashboard_api.php?action=assign_vehicle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ driver_id: driverId, vehicle_id: vehicleId }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              closeAssignModal();
+              loadDashboardData();
+            } else {
+              alert("Assignment Error: " + res.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Assignment Failed:", err);
+          });
+      }
+
+      window.onclick = function (event) {
+        const profModal = document.getElementById("profileModal");
+        const assModal = document.getElementById("assignModal");
+        if (event.target === profModal) closeProfileModal();
+        if (event.target === assModal) closeAssignModal();
+      };
+
       loadDashboardData();
+      setInterval(loadDashboardData, 1000);
     </script>
   </body>
 </html>
